@@ -1,0 +1,26 @@
+{
+	"name": "cobweb/external-links",
+	"type": "typo3-cms-extension",
+	"description": "Extension to handle external links with the LinkHandler window",
+	"homepage": "https://github.com/cobwebch/external_links",
+	"license": [
+		"GPL-2.0+"
+	],
+	"keywords": [
+		"TYPO3 CMS",
+		"links",
+		"linkHandler"
+	],
+	"support": {
+		"issues": "https://github.com/cobwebch/external_links/issues"
+	},
+	"autoload": {
+		"psr-4": {
+			"Cobweb\\ExternalLinks\\": "Classes/"
+		}
+	},
+	"replace": {
+		"external_links": "self.version",
+		"typo3-ter/external-links": "self.version"
+	}
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1486156389" source-language="en" datatype="plaintext" original="messages" date="2017-02-03T21:13:02Z" product-name="recordlist" target-language="fr">
+		<header/>
+		<body>
+			<trans-unit id="tab.externalLinks">
+				<target>Liens externes</target>
+			</trans-unit>
+			<trans-unit id="action.new">
+				<target>Créer lien externe</target>
+			</trans-unit>
+			<trans-unit id="action.cancel">
+				<target>Annuler</target>
+			</trans-unit>
+			<trans-unit id="action.delete">
+				<target>Supprimer</target>
+			</trans-unit>
+			<trans-unit id="action.update">
+				<target>Mettre à jour</target>
+			</trans-unit>
+			<trans-unit id="url.placeholder">
+				<target>URL, exemple: https://www.exemple.ch</target>
+			</trans-unit>
+			<trans-unit id="message.success">
+				<target>Enregistrement ajouté avec succès</target>
+			</trans-unit>
+			<trans-unit id="message.error">
+				<target>Un problème est survenu lors de la sauvegarde</target>
+			</trans-unit>
+			<trans-unit id="modal.edit">
+				<target>Editer un enregistrement</target>
+			</trans-unit>
+			<trans-unit id="modal.delete">
+				<target>Supprimer un enregistrement</target>
+			</trans-unit>
+			<trans-unit id="modal.delete.sure?">
+				<target>Voulez-vous vraiment supprimer ce lien: %s (%s)?</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

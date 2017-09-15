@@ -1,0 +1,2 @@
+# cat=modules//; type=string; label= Page Id: When creating a new record, assign a default pid.
+default_pid = 586

@@ -1,0 +1,7 @@
+# Always hide the default external url
+TCEMAIN.linkHandler.url >
+
+TCEMAIN.linkHandler.externalLink {
+	handler = Cobweb\ExternalLinks\LinkHandler\ExternalLinkHandler
+	label = LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:tab.externalLinks
+}
