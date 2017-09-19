@@ -8,6 +8,13 @@ basic functionalities to create / read / update / delete the external links.
 
 ![](https://raw.githubusercontent.com/cobwebch/external_links/master/Documentation/popup-01.png)
 
-The extension integrates itself with the LinkValidator
+Link Validator
+--------------
+
+The extension integrates itself with the LinkValidator extension. There is
+nothing special to do. A new LinkType will be declared when installing the
+extension and will display a new entry in the LinkValidator BE module.  
+
+![](https://raw.githubusercontent.com/cobwebch/external_links/master/Documentation/link-validator-01.png)
 
  

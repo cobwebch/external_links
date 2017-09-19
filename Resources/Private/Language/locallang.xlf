@@ -36,6 +36,9 @@
 			<trans-unit id="modal.delete.sure?">
 				<source>Do you really want to delete this link: %s (%s)?</source>
 			</trans-unit>
+			<trans-unit id="hooks.externalLink">
+				<source>Ext. External Links:</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
