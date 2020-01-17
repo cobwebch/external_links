@@ -39,6 +39,9 @@
 			<trans-unit id="hooks.externalLink">
 				<source>Ext. External Links:</source>
 			</trans-unit>
+			<trans-unit id="link.deleted">
+				<source>the record was deleted</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

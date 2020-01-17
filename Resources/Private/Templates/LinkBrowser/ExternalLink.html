@@ -1,5 +1,6 @@
-{namespace links = Cobweb\ExternalLinks\ViewHelpers}
-{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<html data-namespace-typo3-fluid="true"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers">
 
 <style>
     body {
@@ -21,18 +22,18 @@
 </style>
 
 <script>
-    // @formatter:off
-    window.ExternalLinks = {};
-    ExternalLinks.lang = {};
-    ExternalLinks.lang['modal.delete'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:modal.delete')}";
-    ExternalLinks.lang['modal.delete.sure?'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:modal.delete.sure?')}";
-    ExternalLinks.lang['modal.edit'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:modal.edit')}";
-    ExternalLinks.lang['action.delete'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:action.delete')}";
-    ExternalLinks.lang['action.cancel'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:action.cancel')}";
-    ExternalLinks.lang['action.update'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:action.update')}";
-    ExternalLinks.lang['message.success'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:message.success')}";
-    ExternalLinks.lang['message.error'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:message.error')}";
-    // @formatter:on
+	// @formatter:off
+	window.ExternalLinks = {};
+	ExternalLinks.lang = {};
+	ExternalLinks.lang['modal.delete'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:modal.delete')}";
+	ExternalLinks.lang['modal.delete.sure?'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:modal.delete.sure?')}";
+	ExternalLinks.lang['modal.edit'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:modal.edit')}";
+	ExternalLinks.lang['action.delete'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:action.delete')}";
+	ExternalLinks.lang['action.cancel'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:action.cancel')}";
+	ExternalLinks.lang['action.update'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:action.update')}";
+	ExternalLinks.lang['message.success'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:message.success')}";
+	ExternalLinks.lang['message.error'] = "{f:translate(key: 'LLL:EXT:external_links/Resources/Private/Language/locallang.xlf:message.error')}";
+	// @formatter:on
 </script>
 
 <div class="element-browser-panel element-browser-main">
@@ -60,6 +61,7 @@
     </div>
 </div>
 
+<!-- Form fields for new link -->
 <footer class="footer">
     <div class="container-footer">
         <form id="form-external-link-new" class="form-inline pull-right">
@@ -94,6 +96,7 @@
     </div>
 </footer>
 
+<!-- Form fields for editing an existing link. Loaded via JS, see Resources/Public/JavaScript/ExternalLinkHandler.js -->
 <script id="template-external-link-edit" type="text/x-handlebars-template">
     <form class="form-external-link-edit">
         <div class="form-group">
@@ -125,3 +128,4 @@
         </div>
     </form>
 </script>
+</html>

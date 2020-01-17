@@ -36,6 +36,10 @@
 			<trans-unit id="modal.delete.sure?">
 				<target>Voulez-vous vraiment supprimer ce lien: %s (%s)?</target>
 			</trans-unit>
+			<trans-unit id="link.deleted">
+				<source>the record was deleted</source>
+				<target>l'enregistrement a été supprimé</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

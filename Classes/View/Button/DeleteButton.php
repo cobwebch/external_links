@@ -18,24 +18,25 @@ use TYPO3\CMS\Core\Imaging\Icon;
 class DeleteButton extends AbstractComponentView
 {
 
-    /**
-     * Renders a "delete" button to be placed in the grid.
-     *
-     * @param array $externalLink
-     * @return string
-     */
-    public function render(array $externalLink) : string
-    {
-        return $this->makeLinkButton()
-            ->setHref('#')
-            ->setDataAttributes([
-                'uid' => $externalLink['uid'],
-                'toggle' => 'tooltip',
-                'url' => $externalLink['url'],
-            ])
-            ->setClasses('btn-delete')
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete'))
-            ->setIcon($this->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
-            ->render();
-    }
+	/**
+	 * Renders a "delete" button to be placed in the grid.
+	 *
+	 * @param array $externalLink
+	 * @return string
+	 */
+	public function render(array $externalLink) : string
+	{
+		$title = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/Resources/Private/Language/locallang_mod_web_list.xlf:delete','lang');
+		return $this->makeLinkButton()
+			->setHref('#')
+			->setDataAttributes([
+				'uid' => $externalLink['uid'],
+				'toggle' => 'tooltip',
+				'url' => $externalLink['url'],
+			])
+			->setClasses('btn-delete')
+			->setTitle($title)
+			->setIcon($this->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
+			->render();
+	}
 }

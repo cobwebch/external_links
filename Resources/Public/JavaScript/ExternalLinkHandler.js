@@ -26,7 +26,6 @@ define([
     var ExternalLinkHandler;
 
     ExternalLinkHandler = {
-
         /**
          * Keep reference of the dataTable
          */
@@ -56,6 +55,7 @@ define([
             this.$grid = $('#table-external-links');
 
             ExternalLinkHandler.initializeGrid();
+            ExternalLinkHandler.initializeSearch();
             ExternalLinkHandler.initializeEditButton();
             ExternalLinkHandler.initializeDeleteButton();
             ExternalLinkHandler.initializeSetLinkAndCloseWindow();
@@ -70,7 +70,19 @@ define([
             this.dataTable = this.$grid.DataTable({
                 paging: false,
                 info: false,
-                ajax: TYPO3.settings.ajaxUrls['external_link_action_list'],
+                language: {
+                    url: "../typo3conf/ext/external_links/Resources/Public/JavaScript/Lang/datatables." + $('html').attr('lang') + ".json"
+                },
+                ajax: {
+                    url: TYPO3.settings.ajaxUrls['external_link_action_list'],
+                    data: function ( d ) {
+                        d.search = ExternalLinkHandler.urlencode($('#table-external-links_filter').find('input[type="search"]').first().val())
+                        // Retrieve current uid from title
+                        var matches = $(".element-browser-title").clone().children().remove().end().text().match(/\(([^)]+)\)/);
+                        d.uid = (matches != null ? matches[1] : 0);
+                    }
+                },
+                "processing": true,
                 columns: [
                     {data: 'icon'},
                     {data: 'label'},
@@ -97,24 +109,48 @@ define([
                         data: $(this).serialize(),
                         success: function(response) {
 
-                            // Reload the Grid.
-                            ExternalLinkHandler.dataTable.ajax.reload();
+                            // Reload the Grid and act when done
+                            ExternalLinkHandler.dataTable.ajax.reload(function () {
 
-                            // Grid is not in a loading state anymore.
-                            ExternalLinkHandler.setIsLoading(false);
+                                // Grid is not in a loading state anymore.
+                                ExternalLinkHandler.setIsLoading(false);
 
-                            // Reset form for a new link.
-                            ExternalLinkHandler.$form.get(0).reset();
+                                // Reset form for a new link.
+                                ExternalLinkHandler.$form.get(0).reset();
 
-                            if (response && response.url) {
-	                            Notification.success(LocalizationUtility.localize('message.success'), response.url);
+                                if (response && response.url) {
+                                    Notification.success(LocalizationUtility.localize('message.success'), response.url);
 
-                            } else {
-	                            Notification.error(LocalizationUtility.localize('message.error'), '');
-                            }
+                                } else {
+                                    Notification.error(LocalizationUtility.localize('message.error'), '');
+                                }
+                            });
                         }
                     });
                 }
+            });
+        },
+
+        initializeSearch: function() {
+            var self = this;
+
+            $('#table-external-links_filter label').append('<a href="#" class="btn btn-default" id="ajax-reload">Search</a>');
+            $('#ajax-reload').on('click', function() {
+                console.log('button reload');
+                ExternalLinkHandler.dataTable.ajax.reload(function() {
+                    console.log('Finished reload from button');
+                });
+            });
+            $('body').on('keypress', '#table-external-links_filter input[type="search"]', function() {
+                console.log('Keypress reload');
+                clearTimeout(self.timer);
+                self.timer = setTimeout(ExternalLinkHandler.reloadSearch, 800);
+            });
+        },
+
+        reloadSearch: function() {
+            ExternalLinkHandler.dataTable.ajax.reload(function() {
+                console.log('Finished reload from keypress');
             });
         },
 
@@ -303,6 +339,20 @@ define([
                 }
             }
             return !hasError;
+        },
+
+        /**
+         * JS Equivalence of PHP urlencode
+         */
+        urlencode: function (str) {
+            str = (str + '')
+            return encodeURIComponent(str)
+                .replace(/!/g, '%21')
+                .replace(/'/g, '%27')
+                .replace(/\(/g, '%28')
+                .replace(/\)/g, '%29')
+                .replace(/\*/g, '%2A')
+                .replace(/%20/g, '+')
         }
     };
 

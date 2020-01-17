@@ -1,2 +1,5 @@
-# cat=modules//; type=string; label= Page Id: When creating a new record, assign a default pid.
+# cat=modules//; type=string; label=Page Id: When creating a new record, assign a default pid.
 default_pid = 586
+
+# cat=modules//; type=string; label=Groups allowed to remove links (unlink is always allowed for everybody): Comma separated uid list of groups allowed to remove links (* means everyone)
+allowed_groups_remove_link = *

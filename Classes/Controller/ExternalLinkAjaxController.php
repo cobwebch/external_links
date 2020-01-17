@@ -23,122 +23,138 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ExternalLinkAjaxController
 {
 
-    /**
-     * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response the current response
-     * @return ResponseInterface the finished response with the content
-     */
-    public function createAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
-    {
-        $result = false;
-        $externalLink = $this->getExternalLinkBuilder()->build($request->getParsedBody());
+	/**
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response the current response
+	 * @return ResponseInterface the finished response with the content
+	 */
+	public function createAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	{
+		$result = false;
+		$externalLink = $this->getExternalLinkBuilder()->build($request->getParsedBody());
 
-        if ($this->getExternalLinkValidator()->validate($externalLink)) {
-            $result = $this->getExternalLinkRepository()->create($externalLink)
-                ? $externalLink
-                : false;
-        }
+		if ($this->getExternalLinkValidator()->validate($externalLink)) {
+			$result = $this->getExternalLinkRepository()->create($externalLink)
+				? $externalLink
+				: false;
+		}
 
-        $response->getBody()->write(json_encode($result));
-        return $response;
-    }
+		$response->getBody()->write(json_encode($result));
+		return $response;
+	}
 
-    /**
-     * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response the current response
-     * @return ResponseInterface the finished response with the content
-     */
-    public function updateAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
-    {
-        $result = false;
-        $externalLink = $this->getExternalLinkBuilder()->build($request->getParsedBody());
+	/**
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response the current response
+	 * @return ResponseInterface the finished response with the content
+	 */
+	public function updateAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	{
+		$result = false;
+		$externalLink = $this->getExternalLinkBuilder()->build($request->getParsedBody());
 
-        if (isset($externalLink['uid']) && $externalLink['uid'] > 0) {
-            $existingExternalLink = $this->getExternalLinkRepository()->findByIdentifier($externalLink['uid']);
-            if ($existingExternalLink && $this->getExternalLinkValidator()->validate($externalLink)) {
-                $result = $this->getExternalLinkRepository()->update($externalLink)
-                    ? $externalLink
-                    : false;
-            }
-        }
+		if (isset($externalLink['uid']) && $externalLink['uid'] > 0) {
+			$existingExternalLink = $this->getExternalLinkRepository()->findByIdentifier($externalLink['uid']);
+			if ($existingExternalLink && $this->getExternalLinkValidator()->validate($externalLink)) {
+				$result = $this->getExternalLinkRepository()->update($externalLink)
+					? $externalLink
+					: false;
+			}
+		}
 
-        $response->getBody()->write(json_encode($result));
-        return $response;
-    }
+		$response->getBody()->write(json_encode($result));
+		return $response;
+	}
 
-    /**
-     * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response the current response
-     * @return ResponseInterface the finished response with the content
-     */
-    public function listAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
-    {
-        $records = $this->getExternalLinkRepository()->findAll();
+	/**
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response the current response
+	 * @return ResponseInterface the finished response with the content
+	 */
+	public function listAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	{
+		$records = $this->getExternalLinkRepository()->search(
+			!empty($request->getQueryParams()['search']) ? urldecode($request->getQueryParams()['search']) : ''
+		);
 
-        $data = [
-            'recordsTotal' => count($records),
-            'data' => $this->getRecordsFormatter()->format($records)
-        ];
-        $response->getBody()->write(
-            json_encode($data)
-        );
-        return $response;
-    }
+		// If there are no search criteria, no record found and a link already existing : set this link in list
+		if (empty($request->getQueryParams()['search']) && empty($records)) {
+			$uid = (int)$request->getQueryParams()['uid'];
+			if ($uid) {
+				$record = $this->getExternalLinkRepository()->findByIdentifier($uid);
+				if (!empty($record)) {
+					$records[] = $record;
+				}
+				else {
+					$records = [];
+				}
+			}
+		}
 
-    /**
-     * @param ServerRequestInterface $request the current request
-     * @param ResponseInterface $response the current response
-     * @return ResponseInterface the finished response with the content
-     */
-    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
-    {
-        $data = $request->getParsedBody();
+		$data = [
+			'recordsTotal' => count($records),
+			'data' => $this->getRecordsFormatter()->format($records)
+		];
+		$response->getBody()->write(
+			json_encode($data)
+		);
+		return $response;
+	}
 
-        $result = false;
-        if (isset($data['uid']) && (int)$data['uid'] > 0) {
+	/**
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response the current response
+	 * @return ResponseInterface the finished response with the content
+	 */
+	public function deleteAction(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	{
+		$data = $request->getParsedBody();
 
-            $externalLink = $this->getExternalLinkRepository()->findByIdentifier((int)$data['uid']);
-            if ($externalLink) {
-                $result = $this->getExternalLinkRepository()->delete($externalLink);
-            }
-        }
+		$result = false;
+		if (isset($data['uid']) && (int)$data['uid'] > 0) {
 
-        $response->getBody()->write(
-            json_encode($result)
-        );
-        return $response;
-    }
+			$externalLink = $this->getExternalLinkRepository()->findByIdentifier((int)$data['uid']);
+			if ($externalLink) {
+				$result = $this->getExternalLinkRepository()->delete($externalLink);
+			}
+		}
 
-    /**
-     * @return object|ExternalLinkRepository
-     */
-    protected function getExternalLinkRepository(): ExternalLinkRepository
-    {
-        return GeneralUtility::makeInstance(ExternalLinkRepository::class);
-    }
+		$response->getBody()->write(
+			json_encode($result)
+		);
+		return $response;
+	}
 
-    /**
-     * @return object|RecordsFormatter
-     */
-    protected function getRecordsFormatter(): RecordsFormatter
-    {
-        return GeneralUtility::makeInstance(RecordsFormatter::class);
-    }
+	/**
+	 * @return object|ExternalLinkRepository
+	 */
+	protected function getExternalLinkRepository(): ExternalLinkRepository
+	{
+		return GeneralUtility::makeInstance(ExternalLinkRepository::class);
+	}
 
-    /**
-     * @return object|ExternalLinkValidator
-     */
-    protected function getExternalLinkValidator(): ExternalLinkValidator
-    {
-        return GeneralUtility::makeInstance(ExternalLinkValidator::class);
-    }
+	/**
+	 * @return object|RecordsFormatter
+	 */
+	protected function getRecordsFormatter(): RecordsFormatter
+	{
+		return GeneralUtility::makeInstance(RecordsFormatter::class);
+	}
 
-    /**
-     * @return object|ExternalLinkBuilder
-     */
-    protected function getExternalLinkBuilder(): ExternalLinkBuilder
-    {
-        return GeneralUtility::makeInstance(ExternalLinkBuilder::class);
-    }
+	/**
+	 * @return object|ExternalLinkValidator
+	 */
+	protected function getExternalLinkValidator(): ExternalLinkValidator
+	{
+		return GeneralUtility::makeInstance(ExternalLinkValidator::class);
+	}
+
+	/**
+	 * @return object|ExternalLinkBuilder
+	 */
+	protected function getExternalLinkBuilder(): ExternalLinkBuilder
+	{
+		return GeneralUtility::makeInstance(ExternalLinkBuilder::class);
+	}
 
 }
