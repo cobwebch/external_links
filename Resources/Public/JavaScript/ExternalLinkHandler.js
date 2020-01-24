@@ -108,6 +108,10 @@ define([
                         method: 'POST',
                         data: $(this).serialize(),
                         success: function(response) {
+                            // Load the newly created link as a search string so that it appears in the list
+                            if (response) {
+                                $('#table-external-links_filter input[type="search"]').val(response.url);
+                            }
 
                             // Reload the Grid and act when done
                             ExternalLinkHandler.dataTable.ajax.reload(function () {
