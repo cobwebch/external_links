@@ -100,9 +100,6 @@ class ExternalLinkHandler extends AbstractLinkHandler implements LinkHandlerInte
 		$pageRenderer->addRequireJsConfiguration($configuration);
 		$pageRenderer->loadRequireJsModule('Cobweb/ExternalLinks/ExternalLinkHandler');
 
-		$records = $this->getExternalLinkRepository()->findAll();
-		$this->view->assign('records', $records);
-
 		// fetch all links
 		$this->view->assign('externalLink', !empty($this->linkParts) ? $this->linkParts['url']['uid'] : '');
 
