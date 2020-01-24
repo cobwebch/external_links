@@ -8,7 +8,7 @@ $EM_CONF[$_EXTKEY] = [
 	'author_email' => 'fabien.udriot@cobweb.ch',
 	'state' => 'stable',
 	'clearCacheOnLoad' => 0,
-	'version' => '1.0.0-dev',
+	'version' => '1.0.1',
     'autoload' => [
         'psr-4' => ['Cobweb\\ExternalLinks\\' => 'Classes']
     ],
