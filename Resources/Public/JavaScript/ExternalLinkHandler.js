@@ -131,26 +131,15 @@ define([
             });
         },
 
+        /**
+         * Initialize the search field, which should react to any form of input
+         */
         initializeSearch: function() {
-            var self = this;
-
-            $('#table-external-links_filter label').append('<a href="#" class="btn btn-default" id="ajax-reload">Search</a>');
-            $('#ajax-reload').on('click', function() {
-                console.log('button reload');
+            $('body').on('input', '#table-external-links_filter input[type="search"]', function() {
+                console.log('Input reload');
                 ExternalLinkHandler.dataTable.ajax.reload(function() {
-                    console.log('Finished reload from button');
+                    console.log('Finished reload from input');
                 });
-            });
-            $('body').on('keypress', '#table-external-links_filter input[type="search"]', function() {
-                console.log('Keypress reload');
-                clearTimeout(self.timer);
-                self.timer = setTimeout(ExternalLinkHandler.reloadSearch, 800);
-            });
-        },
-
-        reloadSearch: function() {
-            ExternalLinkHandler.dataTable.ajax.reload(function() {
-                console.log('Finished reload from keypress');
             });
         },
 
